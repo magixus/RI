@@ -1,8 +1,17 @@
 from math import log10
+from django.conf import settings
+from os import listdir
+from os.path import join
+import nltk
 
-N = 4
-listcar = {'.', ',', '!', '?',"'"}
-stoplist = open('stopwords_fr.txt', 'r').read().lower().split()
+
+# get document root collections
+mypath = join(settings.BASE_DIR, 'static/documents')
+#get document number
+N = len(listdir(mypath))
+
+listcar = {'.', ',', '!', '?',"'","...",";","-"}
+stoplist = open(join(mypath,"stopwords_fr.txt"), 'r').read().lower().split()
 
 
 def f(freq,w):
@@ -15,10 +24,16 @@ def fd(q,w,d):
         return q[w,d]
     return 0
 
-def generateReversedFile(path="Chek/D",N=4):
+## load a file and return it content
+def load(fileName):
+  f = open(fileName, 'r', encoding="utf-8")
+  str = f.read()
+  f.close()
+  return str
+
+def generateReversedFile():
     k = 1
     freq = {}  # dict vide
-
 
     while k <= N:
         f = open(path + str(k) + '.txt', 'r')

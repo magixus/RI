@@ -1,0 +1,136 @@
+{%  extends 'recherche/base.html' %}
+{% load static %}
+{% block title %}
+	Recherche par items
+{% endblock %}
+{% block add_css %}
+	<link ref="stylesheet" type="text/css" href="{% static 'assets/css/snackbar.min.css' %}" />
+	<style>
+		#tag{
+			font-size: 40px;
+			color: black;
+		}
+	</style>
+{% endblock %}
+
+{% block body_content %}
+		<div class="py-5 text-center">
+	    <div class="container">
+	      <div class="row">
+	        <div class="col bg-light shadow w-100">
+	          <form action="{% url 'searchTags' %}" method="POST">
+		          {% csrf_token %}
+	            <div class="form-group">
+		            <label for="tag" class="">Requête</label>
+		            <small id="tagHelp" class="form-text text-muted"> write your request here</small>
+		            <input type="text" class="form-control p-5 shadow mt-2 text-center" placeholder="" id="tag" name="requete" required="required">
+	            </div>
+	            <div class="row form-group">
+	              <div class="col-md-4">
+	                <input type="radio" name="method" class="form-control" id="method_1" value="booleen" checked>
+	                <label class="form-check-label" for="method_1">Booléen</label>
+	              </div>
+	              <div class="col-md-4">
+	                <input type="radio" name="method" class="form-control" id="method_2" value="vectoriel">
+	                <label class="form-check-label" for="method_2">Vectoriel</label>
+	              </div>
+	              <div class="col-md-4">
+	                <input type="radio" name="method" class="form-control" id="method_3" value="probabiliste">
+	                <label class="form-check-label" for="method_3">Probabiliste</label>
+	              </div>
+	            </div>
+	            <div class="row form-group invisible" id="ap">
+	              <div class="col-md-3">
+	                <input type="radio" name="appariement" id="appariement_1" value="prod_intern">
+	                <label class="form-check-label" for="appariement_1">Produit Interne</label>
+	              </div>
+	              <div class="col-md-3">
+	                <input type="radio" name="appariement" id="appariement_2" value="coef_dice">
+	                <label class="form-check-label" for="appariement_2">coef de Dice</label>
+	              </div>
+	              <div class="col-md-3">
+	                <input type="radio" name="appariement" id="appariement_3" value="cosinus">
+	                <label class="form-check-label" for="appariement_3">Cosinus</label>
+	              </div>
+	              <div class="col-md-3">
+	                <input type="radio" name="appariement" id="appariement_4" value="jaccard">
+	                <label class="form-check-label" for="appariement_4">Jaccard</label>
+	              </div>
+	            </div>
+	            <button id="cherche" class="btn btn-primary w-100 btn-block btn-lg">cherche !</button>
+	          </form>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<!-- show documents here -->
+	  <div class="py-5">
+	    <div class="container">
+	      <div class="row">
+	        <div class="col-md-12">
+	          <div class="table-responsive">
+	            <table class="table table-striped table-borderless">
+	              <thead>
+	                <tr>
+	                  <th scope="col">#</th>
+	                  <th scope="col">First</th>
+	                  <th scope="col">Last</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	                <tr>
+	                  <th scope="row">1</th>
+	                  <td>Mark</td>
+	                  <td>Otto</td>
+	                </tr>
+	                <tr>
+	                  <th scope="row">2</th>
+	                  <td>Jacob</td>
+	                  <td>Thornton</td>
+	                </tr>
+	                <tr>
+	                  <th scope="row">3</th>
+	                  <td>Larry</td>
+	                  <td>the Bird</td>
+	                </tr>
+	              </tbody>
+	            </table>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+
+{% endblock %}
+
+ {% block new_script %}
+	<script src="{% static 'assets/js/snackbar.min.js' %}"></script>
+
+	<script>
+			$(document).ready(function(){
+			    if ($('#method_2').prop("checked",true ) ||  $('#method_3').prop("checked",true )) {
+			      $('#ap').removeClass('invisible');
+			    }
+          // show appariement content when methods are clicked
+          $('#method_2, #method_3').click(function (element) {
+              if ($(element).prop("checked",true )) $('#ap').removeClass('invisible');
+              else $('#ap').addClass('invisible');
+          });
+          $('#method_1').click(function (element) {
+              $('#ap').addClass('invisible');
+          });
+			});
+
+	     $('#cherche').click(function() {
+           Snackbar.show({
+		           text: 'you have submited with success',
+		           width: '475px',
+		           pos: 'bottom-left',
+		           duration: 100000
+           });
+        });
+
+
+	</script>
+ {% endblock %}

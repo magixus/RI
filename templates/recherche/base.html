@@ -39,26 +39,26 @@
 
       <div class="collapse navbar-collapse " id="navbarSupportedContent" >
         <ul class="navbar-nav mx-auto">
-            <li class="nav-item" id="documents">
-                <a class="nav-link py-4" href="{% url 'documents' %}">recherche</a>
-            </li>
-            <li class="nav-item" id="infos">
-                <a class="nav-link py-4" href="{% url 'infos' %}"> about </a>
-            </li>
-            <li class="nav-item" id="statistics">
-                <a class="nav-link py-4" href="{% url 'statistics' %}"> statistics </a>
-            </li>
-            {% comment %}<li class="nav-item dropdown">
-              <a class="nav-link py-4 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                recherche
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">booléenne</a>
-                <a class="dropdown-item" href="#">vecteurielle</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">probabiliste</a>
-              </div>
-            </li>{% endcomment %}
+          <li class="nav-item" id="documents">
+              <a class="nav-link  text-white py-4" href="{% url 'documents' %}">recherche</a>
+          </li>
+	        <li class="nav-item" id="statistics">
+		        <a class="nav-link  text-white py-4" href="{% url 'statistics' %}"> statistics </a>
+	        </li>
+          <li class="nav-item" id="infos">
+              <a class="nav-link  text-white py-4" href="{% url 'infos' %}"> about </a>
+          </li>
+          {% comment %}<li class="nav-item dropdown">
+            <a class="nav-link py-4 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              recherche
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">booléenne</a>
+              <a class="dropdown-item" href="#">vecteurielle</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">probabiliste</a>
+            </div>
+          </li>{% endcomment %}
         </ul>
       </div>
     </nav>
