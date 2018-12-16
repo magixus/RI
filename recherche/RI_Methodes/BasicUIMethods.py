@@ -1,6 +1,6 @@
 from recherche.RI_Methodes import ProbaModel
 from recherche.RI_Methodes import VectorialModel
-from recherche.RI_Methodes import basicMethods as bm
+from recherche.RI_Methodes import inverseFileConstructionMethods as bm
 from recherche.RI_Methodes.BooleanModel import getDocScores
 
 

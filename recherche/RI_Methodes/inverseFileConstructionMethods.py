@@ -43,71 +43,56 @@ def generateReversedFile():
         # get all the words of the documents and filter stop items
         splitter = re.compile('\\W*')
         fd = nltk.FreqDist([s.lower() for s in splitter.split(text) if s not in stopitem])
-        print(fd)
 
         for w in fd.keys():
           freq[w, f] = fd[w]
     return freq
 
 def generateFreqOfQuery(query):
-    query = query.lower()
-    a = re.split('\s+',query)
-    i = 0
-    while i < len(query):
-        if query[i] in listcar:
-            query = query.replace(query[i], " ")
-        i += 1
-
-    f = {}
-    for w in a:
-        if w not in stopitem and len(w) > 1:
-            if w not in f:
-                f[w] = a.count(w)
-
-    return f
+    # get frequence of all usefull element from the query
+    return nltk.FreqDist([w for w in query.lower().split() if w not in stopitem])
 
 #Exercice 02
-def indexdoc(freq,d): #fonction pr 1 document
-    # print("l'index du Document ",d," est")
-    f = {}
-    for(a,b) in freq:
-        if b==d:
-            f[a] = freq[a,b]
-    return f
+def indexdoc(freq,d): # freq of all words of doc d
+  f = {}
+  for(a,b) in freq:
+    if b==d:
+      f[a] = freq[a,b]
+  return f
 
-def indexmot(freq,w):  #fonction pr 1 mot
-    # print("l'index du mot ",w," est")
-    f = {}
-    for (a,b) in freq:
-        if a==w:
-            f[b] = freq[a,b]
+def indexmot(freq,w):  # freq of a given words in each doc
+  f = {}
+  for (a,b) in freq:
+    if a==w:
+      f[b] = freq[a,b]
+  return f
 
-    return f
+def getNi(freq): # freq of all words in all docs
+  ni = {}
+  for (w,d) in freq:
+    if not w in ni:
+      ni[w] = 0
+    ni[w] += 1
+  return ni
 
-def getNi(freq):
-    ni = {}
-    for (w,d) in freq:
-        if not w in ni:
-            ni[w] = 0
-        ni[w] += 1
-    return ni
-
-def maxFreq(freq,N):
+def maxFreq(freq):
     maxF = {}
-    for doc in range(1,N+1):
-        maxF[doc] = max([freq[w,d] for (w,d) in freq if d==doc])
+    for file in listdir(mypath):
+      if not file.startswith("stop"):
+        maxF[file] = max([freq[w,d] for (w,d) in freq if d==file])
     return maxF
 
-def getWeights(freq,N):
+def getWeights(freq):
     ni = getNi(freq)
-    maxes = maxFreq(freq,N)
+    MAX = maxFreq(freq)
     poids = {}
     for (w, d) in freq:
-        poids[w, d] = (float(freq[w, d]) / float(maxes[d])) * log10(float(N) / float(ni[w])+1)
+        poids[w, d] = (float(freq[w, d]) / float(MAX[d])) * log10(float(N) / float(ni[w])+1)
     return poids
 
 
 
 freq = generateReversedFile()
-
 print(freq)
+print(getWeights(freq))
+print(maxFreq(freq))
