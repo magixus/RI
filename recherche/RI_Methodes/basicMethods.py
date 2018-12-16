@@ -2,27 +2,25 @@ from math import log10
 from django.conf import settings
 from os import listdir
 from os.path import join
+import re
 import nltk
-
 
 # get document root collections
 mypath = join(settings.BASE_DIR, 'static/documents')
-#get document number
-N = len(listdir(mypath))
 
-listcar = {'.', ',', '!', '?',"'","...",";","-"}
-stoplist = open(join(mypath,"stopwords_fr.txt"), 'r').read().lower().split()
+# get document number
+N = len(listdir(mypath))
 
 
 def f(freq,w):
-    if w in freq:
-        return freq[w]
-    return 0
+  if w in freq:
+    return freq[w]
+  return 0
 
 def fd(q,w,d):
-    if w in q:
-        return q[w,d]
-    return 0
+  if w in q:
+    return q[w,d]
+  return 0
 
 ## load a file and return it content
 def load(fileName):
@@ -31,35 +29,28 @@ def load(fileName):
   f.close()
   return str
 
-def generateReversedFile():
-    k = 1
-    freq = {}  # dict vide
+# separate stop items
+listponctuation = set([".", ",", "!", "?","'","...",";","-"])
+stopitem = set(load(join(mypath,"stopwords_fr.txt")).lower().split('\n')) | listponctuation
 
-    while k <= N:
-        f = open(path + str(k) + '.txt', 'r')
-        t = f.read()
-        t = t.lower()
-        i = 0
-        while i < len(t):
-            if t[i] in listcar:
-                t = t.replace(t[i], " ")
-            i += 1
-        a = t.split()
-        for w in a:
-            if w not in stoplist and len(w) > 1:
-                if (w, k) not in freq:
-                    freq[w, k] = a.count(w)
-                    # print(w, freq[w, k])
-        k += 1
-        f.close()
-    # print("Le fichier inverse de la collection ")
-    # for word in freq:
-    #     print(word)
+
+def generateReversedFile():
+    freq = {}  # empty dict
+    for f in listdir(mypath):
+      ## get the text of the file and set it to lowercase
+      if not f.startswith("stop"):
+        text = load(join(mypath,f)).lower()
+        # get all the words of the documents and filter stop items
+        splitter = re.compile('\\W*')
+        fd = nltk.FreqDist([s.lower() for s in splitter.split(text) if s not in stopitem])
+        print(fd)
+
+        for w in fd.keys():
+          freq[w, f] = fd[w]
     return freq
 
 def generateFreqOfQuery(query):
     query = query.lower()
-    import re
     a = re.split('\s+',query)
     i = 0
     while i < len(query):
@@ -69,7 +60,7 @@ def generateFreqOfQuery(query):
 
     f = {}
     for w in a:
-        if w not in stoplist and len(w) > 1:
+        if w not in stopitem and len(w) > 1:
             if w not in f:
                 f[w] = a.count(w)
 
@@ -119,3 +110,4 @@ def getWeights(freq,N):
 
 freq = generateReversedFile()
 
+print(freq)
