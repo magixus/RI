@@ -92,7 +92,7 @@ def getWeights(freq):
 
 
 
-freq = generateReversedFile()
+reverseFile = generateReversedFile()
 #print(freq)
 #print(getWeights(freq))
 #print(maxFreq(freq))

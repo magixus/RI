@@ -1,36 +1,36 @@
 from recherche.RI_Methodes import inverseFileConstructionMethods as ifcm
 import math
 
-def scoreInnerProduct(freq,fquery,w):
-    return sum([ifcm.f(fquery,w)*ifcm.f(freq,w) for w in fquery])
+def scoreInnerProduct(reverseFile,fquery,w):
+    return sum([ifcm.f(fquery,w)*ifcm.f(reverseFile,w) for w in fquery])
 
-def scoreCoefDice(freq,fquery,words):
-    up = 2*scoreInnerProduct(freq,fquery,words)
-    # words = set([w for w in freq]+[w for w in fquery])
-    down = sum([ifcm.f(fquery,w)*ifcm.f(fquery,w)+ifcm.f(freq,w)*ifcm.f(freq,w) for w in words])
+def scoreCoefDice(reverseFile,fquery,words):
+    up = 2*scoreInnerProduct(reverseFile,fquery,words)
+    # words = set([w for w in reverseFile]+[w for w in fquery])
+    down = sum([ifcm.f(fquery,w)*ifcm.f(fquery,w)+ifcm.f(reverseFile,w)*ifcm.f(reverseFile,w) for w in words])
     #print ("DICE DOWN")
     #print (down)
     return (up/down)
 
-def scoreCosin(freq,fquery,words):
-    up = scoreInnerProduct(freq,fquery,words)
-    # words = set([w for w in freq] + [w for w in fquery])
+def scoreCosin(reverseFile,fquery,words):
+    up = scoreInnerProduct(reverseFile,fquery,words)
+    # words = set([w for w in reverseFile] + [w for w in fquery])
     s1 = sum([ifcm.f(fquery,w)*ifcm.f(fquery,w) for w in words])
-    s2 = sum([ifcm.f(freq,w)*ifcm.f(freq,w) for w in words])
+    s2 = sum([ifcm.f(reverseFile,w)*ifcm.f(reverseFile,w) for w in words])
     down = math.sqrt(s1*s2)
     return up/down
 
-def scoreJaccard(freq,fquery,words):
-    up = scoreInnerProduct(freq,fquery,words)
-    # words = set([w for w in freq] + [w for w in fquery])
-    down = sum([ifcm.f(fquery,w)*ifcm.f(fquery,w)+ifcm.f(freq,w)*ifcm.f(freq,w) for w in words]) - up
+def scoreJaccard(reverseFile,fquery,words):
+    up = scoreInnerProduct(reverseFile,fquery,words)
+    # words = set([w for w in reverseFile] + [w for w in fquery])
+    down = sum([ifcm.f(fquery,w)*ifcm.f(fquery,w)+ifcm.f(reverseFile,w)*ifcm.f(reverseFile,w) for w in words]) - up
     return up / down
 
 
-def getDocScores(freq,query, computeFunction=scoreInnerProduct):
-    weights = ifcm.getWeights(freq)
+def getDocScores(reverseFile,query, computeFunction=scoreInnerProduct):
+    weights = ifcm.getWeights(reverseFile)
     fquery = ifcm.generateFreqOfQuery(query)
-    words = set([w for (w,d) in freq])
+    words = set([w for (w,d) in reverseFile])
     docList = []
     for d in ifcm.docs:
         weightd = ifcm.indexdoc(weights,d)
@@ -41,8 +41,8 @@ def getDocScores(freq,query, computeFunction=scoreInnerProduct):
 
 """
 query = "domaine qui permet de faire la recherche"
-print(getDocScores(ifcm.freq,query,computeFunction=scoreInnerProduct))
-print(getDocScores(ifcm.freq,query,computeFunction=scoreCoefDice))
-print(getDocScores(ifcm.freq,query,computeFunction=scoreCosin))
-print(getDocScores(ifcm.freq,query,computeFunction=scoreJaccard))
+print(getDocScores(ifcm.reverseFile,query,computeFunction=scoreInnerProduct))
+print(getDocScores(ifcm.reverseFile,query,computeFunction=scoreCoefDice))
+print(getDocScores(ifcm.reverseFile,query,computeFunction=scoreCosin))
+print(getDocScores(ifcm.reverseFile,query,computeFunction=scoreJaccard))
 """
