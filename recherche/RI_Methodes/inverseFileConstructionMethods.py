@@ -8,9 +8,11 @@ import nltk
 # get document root collections
 mypath = join(settings.BASE_DIR, 'static/documents')
 
-# get document number
-N = len(listdir(mypath))
+# list of all docs without stopwords
+docs = [l for l in listdir(mypath) if not l.startswith("stop")]
 
+# get document number
+N = len(docs)
 
 def f(freq,w):
   if w in freq:
@@ -36,16 +38,15 @@ stopitem = set(load(join(mypath,"stopwords_fr.txt")).lower().split('\n')) | list
 
 def generateReversedFile():
     freq = {}  # empty dict
-    for f in listdir(mypath):
+    for f in docs:
       ## get the text of the file and set it to lowercase
-      if not f.startswith("stop"):
-        text = load(join(mypath,f)).lower()
-        # get all the words of the documents and filter stop items
-        splitter = re.compile('\\W*')
-        fd = nltk.FreqDist([s.lower() for s in splitter.split(text) if s not in stopitem])
+      text = load(join(mypath,f)).lower()
+      # get all the words of the documents and filter stop items
+      splitter = re.compile('\\W*')
+      fd = nltk.FreqDist([s.lower() for s in splitter.split(text) if s not in stopitem])
 
-        for w in fd.keys():
-          freq[w, f] = fd[w]
+      for w in fd.keys():
+        freq[w, f] = fd[w]
     return freq
 
 def generateFreqOfQuery(query):
@@ -77,9 +78,8 @@ def getNi(freq): # freq of all words in all docs
 
 def maxFreq(freq):
     maxF = {}
-    for file in listdir(mypath):
-      if not file.startswith("stop"):
-        maxF[file] = max([freq[w,d] for (w,d) in freq if d==file])
+    for file in docs:
+      maxF[file] = max([freq[w,d] for (w,d) in freq if d==file])
     return maxF
 
 def getWeights(freq):
@@ -93,6 +93,6 @@ def getWeights(freq):
 
 
 freq = generateReversedFile()
-print(freq)
-print(getWeights(freq))
-print(maxFreq(freq))
+#print(freq)
+#print(getWeights(freq))
+#print(maxFreq(freq))

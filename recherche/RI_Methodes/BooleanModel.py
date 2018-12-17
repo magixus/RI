@@ -1,16 +1,14 @@
-import basicMethods as bm
+from recherche.RI_Methodes import inverseFileConstructionMethods as ifcm
 
 
 def getDocScores(freq,query,N):
-    # freq = bm.generateReversedFile(path,N)
-
-
+    # freq = ifcm.generateReversedFile(path,N)
     tab = query.split()
     stopWords = ['and', 'or', '(', ')', 'not']
 
     docList = []
     for d in range(1, N+1):
-        indexDoc = bm.indexdoc(freq, d)
+        indexDoc = ifcm.indexdoc(freq, d)
         newQuery = ""
         for w in tab:
             toAdd = w
