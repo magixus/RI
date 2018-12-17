@@ -1,4 +1,4 @@
-from recherche.froms import   searchForm
+from recherche.froms import   searchForm, evaluteForm
 from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse
@@ -6,6 +6,14 @@ from django.conf import settings
 from os import listdir
 from os.path import join
 import nltk
+from recherche.RI_Methodes import reverseFileConstructionMethods as RF
+from recherche.RI_Methodes import BooleanModel as BM
+from recherche.RI_Methodes import VectorialModel as VM
+from recherche.RI_Methodes import ProbaModel as PM
+
+# get reversefile
+reversefile = RF.reverseFile
+
 
 mypath = join(settings.BASE_DIR, 'static/documents')  # insert the path to our directory
 
@@ -56,16 +64,44 @@ def show_doc(request, doc):
 
 
 def searchTags(request):
+  res = set()
   # if this is a POST request we need to process the form data
   if request.method == 'POST':
     # create a form instance and populate it with data from the request:
     form = searchForm(request.POST)
+    form_evaluate = searchForm(request.POST)
     # check whether it's valid:
     if form.is_valid():
       query = form.cleaned_data['requete']
       mthod = form.cleaned_data['method']
+      aprmnt = ""
       if not mthod.startswith("boo"):
         aprmnt = form.cleaned_data['appariement']
+
+      if mthod.startswith('bool') :
+        docs = BM.getDocScores(reversefile,query)
+        return render(request, "recherche/search.html", {'b_documents':docs})
+
+      else :
+        if aprmnt.startswith("prod"):
+          res = VM.getDocScores(reversefile,query,VM.scoreInnerProduct)
+        elif aprmnt.startswith("coef"):
+          res = VM.getDocScores(reversefile,query,VM.scoreCoefDice)
+        elif aprmnt.startswith("cosinus"):
+          res = VM.getDocScores(reversefile,query,VM.scoreCosin)
+        elif aprmnt.startswith("jacc"):
+          res = VM.getDocScores(reversefile,query,VM.scoreJaccard)
+
+        if mthod.startswith("vect") : # request vect model
+          print("vec")
+          return render(request, "recherche/search.html", {'v_documents':res})
+        else: # reqest proba model
+          print(res)
+          return render(request, "recherche/search.html", {'p_documents':res})
+
+
+
+
 
       print("valide\n", form.cleaned_data )
       return render(request,"recherche/search.html")

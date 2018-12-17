@@ -1,30 +1,28 @@
-from recherche.RI_Methodes import inverseFileConstructionMethods as ifcm
+from recherche.RI_Methodes import reverseFileConstructionMethods as ifcm
 
 
-def getDocScores(freq,query,N):
-    # freq = ifcm.generateReversedFile(path,N)
-    tab = query.split()
-    stopWords = ['and', 'or', '(', ')', 'not']
+def getDocScores(freq,query):
+  # freq = ifcm.generateReversedFile(path,N)
+  stopWords = set(["and", "or", "(", ")", "not"])
+  tab = set([w for w in query.split() if w not in stopWords])
 
-    docList = []
-    for d in range(1, N+1):
-        indexDoc = ifcm.indexdoc(freq, d)
-        newQuery = ""
-        for w in tab:
-            toAdd = w
-            # print(w + " is in " + str(stopWords))
-            # print(not(w in stopWords))
-            if not (w in stopWords):
-                if w in indexDoc.keys() and indexDoc[w] > 0:
-                    toAdd = "1"
-                else:
-                    toAdd = "0"
-            newQuery += toAdd + " "
-        try:
-            docList.append(eval(newQuery))
-        except Exception:
-            print("wrong query format")
-            break
-
-    # print(docList)
-    return docList
+  """
+    when we give a request like "info and robotic" ==> 
+    
+  """
+  docList = []
+  for d in ifcm.docs:
+    indexDoc = ifcm.indexdoc(freq, d) # frequence of all words in doc d
+    newQuery = query
+    for w in tab:
+      if w in indexDoc.keys() :
+        newQuery = newQuery.replace(w,"1")
+      else:
+        newQuery = newQuery.replace(w, "0")
+    try:
+      if (eval(newQuery)):
+        docList.append(d)
+    except Exception:
+      print("wrong query format")
+      break
+  return docList

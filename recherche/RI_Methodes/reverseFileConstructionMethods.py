@@ -93,6 +93,5 @@ def getWeights(reverseFile):
 
 
 reverseFile = generateReversedFile()
-print(reverseFile)
-#print(getWeights(reverseFile))
-#print(maxFreq(reverseFile))
+#print(getWeights(reverseFile)) # get all weights
+#print(maxFreq(reverseFile)) # get max frequence

@@ -1,4 +1,4 @@
-from recherche.RI_Methodes import inverseFileConstructionMethods as ifcm
+from recherche.RI_Methodes import reverseFileConstructionMethods as ifcm
 import math
 
 def scoreInnerProduct(reverseFile,fquery,w):
@@ -31,12 +31,11 @@ def getDocScores(reverseFile,query, computeFunction=scoreInnerProduct):
     weights = ifcm.getWeights(reverseFile)
     fquery = ifcm.generateFreqOfQuery(query)
     words = set([w for (w,d) in reverseFile])
-    docList = []
+    docList = {}
     for d in ifcm.docs:
         weightd = ifcm.indexdoc(weights,d)
         score = computeFunction(weightd,fquery,words)
-        docList.append(score)
-    # print(docList)
+        docList[d] = (score)
     return docList
 
 """

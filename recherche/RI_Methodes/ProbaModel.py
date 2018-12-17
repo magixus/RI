@@ -1,4 +1,4 @@
-from recherche.RI_Methodes import  inverseFileConstructionMethods as ifcm
+from recherche.RI_Methodes import  reverseFileConstructionMethods as ifcm
 import math
 
 def pertinentContainWord(freq,pertinent,w):
@@ -11,8 +11,8 @@ def pertinentContainWord(freq,pertinent,w):
 
 def documentsContainWord(freq,w):
   index = ifcm.indexmot(freq,w)
-  print(w+" is in %d documents: " % str(len(index)))
-  return len(index)
+  print(w+" is in %s documents: " % str(len(index)))
+  return index.keys
 
 def getDocScores(freq,query,pertinent):
   # freq = ifcm.generateReversedFile(path,N)
@@ -26,8 +26,8 @@ def getDocScores(freq,query,pertinent):
     for w in fquery:
       ri = pertinentContainWord(freq,pertinent,w)
       ni = documentsContainWord(freq,w)
-      s = s + (f(weightd,w)*math.log10(((ri + 0.5) / (R - ri + 0.5)) / ((ni - ri + 0.5) /(N - ni - R + ri + 0.5))))
-      r = math.log10(((ri + 0.5) / (R - ri + 0.5)) / ((ni - ri + 0.5) /(N - ni - R + ri + 0.5)))
+      s = s + (ifcm.f(weightd,w)*math.log10(((ri + 0.5) / (R - ri + 0.5)) / ((ni - ri + 0.5) /(N - ni - R + ri + 0.5))))
+      r = math.log10(((ri + 0.5) / (R - ri + 0.5)) / ((ni - ri + 0.5) /(ifcm.N - ni - R + ri + 0.5)))
     score = s
     docList.append(score)
   # print(docList)
