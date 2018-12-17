@@ -20,33 +20,35 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 		<!-- Custom styles for this template bs 4.1.2-->
 		<link href="{% static 'assets/css/document.css' %}" rel="stylesheet">
-        {% block add_css %}
-        
-        {% endblock %}
+    {% block add_css %}
+    
+    {% endblock %}
 	</head>
 
-	<body>
-    <!-- navigation bar -->
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top ml-auto ">
+	<body id="top">
 
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+
+    <!-- navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-secondary sticky-top ml-auto" id="mainNav">
+
+	    <a class="navbar-brand js-scroll-trigger px-md-3 px-sm-3 py-4 active d-flex justify-content-end" href="#top">
+		    Recherche d'information       </a>
+	    <button class="navbar-toggler nav-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	      menu<i class="fa fa-bars"></i>
       </button>
 
 
-      <a class="navbar-brand px-md-3 py-4 active d-flex justify-content-end" href="/">
-        Recherche d'information       </a>
 
       <div class="collapse navbar-collapse " id="navbarSupportedContent" >
         <ul class="navbar-nav mx-auto">
           <li class="nav-item" id="documents">
-              <a class="nav-link  text-white py-4" href="{% url 'documents' %}">recherche</a>
+              <a class="nav-link  text-white py-4 js-scroll-trigger" href="{% url 'documents' %}">recherche</a>
           </li>
 	        <li class="nav-item" id="statistics">
-		        <a class="nav-link  text-white py-4" href="{% url 'statistics' %}"> statistics </a>
+		        <a class="nav-link  text-white py-4 js-scroll-trigger" href="{% url 'statistics' %}"> statistics </a>
 	        </li>
           <li class="nav-item" id="infos">
-              <a class="nav-link  text-white py-4" href="{% url 'infos' %}"> about </a>
+              <a class="nav-link  text-white py-4 js-scroll-trigger" href="{% url 'infos' %}"> about </a>
           </li>
           {% comment %}<li class="nav-item dropdown">
             <a class="nav-link py-4 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -62,13 +64,16 @@
         </ul>
       </div>
     </nav>
+	{% block add_masthead %}
 
-    {% block body_content %}
+	{% endblock %}
 
-    {% endblock %}
+  {% block body_content %}
+
+  {% endblock %}
 
 
-    <!-- Footer -->
+    {% comment %}<!-- Footer -->
     <footer class="page-footer font-small special-color-dark pt-4">
 
         <!-- Footer Elements -->
@@ -116,7 +121,7 @@
         <!-- Copyright -->
 
       </footer>
-      <!-- Footer -->
+      <!-- Footer -->{% endcomment %}
 
 
 

@@ -68,31 +68,31 @@ def indexmot(freq,w):  # freq of a given words in each doc
       f[b] = freq[a,b]
   return f
 
-def getNi(freq): # freq of all words in all docs
+def getNi(reverseFile): # freq of all words in all docs
   ni = {}
-  for (w,d) in freq:
+  for (w,d) in reverseFile:
     if not w in ni:
       ni[w] = 0
     ni[w] += 1
   return ni
 
-def maxFreq(freq):
+def maxFreq(reverseFile):
     maxF = {}
     for file in docs:
-      maxF[file] = max([freq[w,d] for (w,d) in freq if d==file])
+      maxF[file] = max([reverseFile[w,d] for (w,d) in reverseFile if d==file])
     return maxF
 
-def getWeights(freq):
-    ni = getNi(freq)
-    MAX = maxFreq(freq)
-    poids = {}
-    for (w, d) in freq:
-        poids[w, d] = (float(freq[w, d]) / float(MAX[d])) * log10(float(N) / float(ni[w])+1)
+def getWeights(reverseFile):
+    ni = getNi(reverseFile)
+    MAX = maxFreq(reverseFile)
+    poids = {}   # TF*IDF: poids(ti, dj)=(freq(ti,dj)/Max(freq(t, dj))*Log((N/ni) +1)
+    for (w, d) in reverseFile:
+        poids[w, d] = (float(reverseFile[w, d]) / float(MAX[d])) * log10(float(N) / float(ni[w])+1)
     return poids
 
 
 
 reverseFile = generateReversedFile()
-#print(freq)
-#print(getWeights(freq))
-#print(maxFreq(freq))
+print(reverseFile)
+#print(getWeights(reverseFile))
+#print(maxFreq(reverseFile))

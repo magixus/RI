@@ -10,15 +10,44 @@
 			font-size: 40px;
 			color: black;
 		}
+		header.masthead{
+			z-index: -1;+
+			text-align: center;
+			color : white;
+			background-image: url({% static 'assets/img/card-3.jpeg' %}) ;
+			background-repeat: no-repeat;
+			background-attachment: scroll;
+			background-position: center center;
+			background-size: cover;
+			-moz-background-size: cover;
+	    -webkit-background-size: cover;
+	    -o-background-size: cover;
+			width: 100%;
+			height: 100%;
+			position: fixed;
+		}
 	</style>
 {% endblock %}
+
+{% block add_masthead %}
+	<header class="masthead">
+			<div class="container">
+				<div class="intro-text">
+
+				</div>
+			</div>
+	</header>
+{% endblock %}
+
+
+
 
 {% block body_content %}
 		<div class="py-5 text-center">
 	    <div class="container">
 	      <div class="row">
 	        <div class="col bg-light shadow w-100">
-	          <form action="{% url 'searchTags' %}" method="POST">
+	          <form action="{% url 'searchTags' %}" method="POST" class="shdow py-3">
 		          {% csrf_token %}
 	            <div class="form-group">
 		            <label for="tag" class="">Requête</label>
@@ -27,21 +56,21 @@
 	            </div>
 	            <div class="row form-group">
 	              <div class="col-md-4">
-	                <input type="radio" name="method" class="form-control" id="method_1" value="booleen" checked>
-	                <label class="form-check-label" for="method_1">Booléen</label>
+		              <label class="form-check-label" for="method_1">Booléen</label>
+		              <input type="radio" name="method" id="method_1" value="booleen" checked>
 	              </div>
 	              <div class="col-md-4">
-	                <input type="radio" name="method" class="form-control" id="method_2" value="vectoriel">
-	                <label class="form-check-label" for="method_2">Vectoriel</label>
+		              <label class="form-check-label" for="method_2">Vectoriel</label>
+		              <input type="radio" name="method" id="method_2" value="vectoriel" >
 	              </div>
 	              <div class="col-md-4">
-	                <input type="radio" name="method" class="form-control" id="method_3" value="probabiliste">
-	                <label class="form-check-label" for="method_3">Probabiliste</label>
+		              <label class="form-check-label" for="method_3">Probabiliste</label>
+		              <input type="radio" name="method" id="method_3" value="probabiliste" />
 	              </div>
 	            </div>
 	            <div class="row form-group invisible" id="ap">
 	              <div class="col-md-3">
-	                <input type="radio" name="appariement" id="appariement_1" value="prod_intern">
+	                <input type="radio" name="appariement" id="appariement_1" value="prod_intern" checked />
 	                <label class="form-check-label" for="appariement_1">Produit Interne</label>
 	              </div>
 	              <div class="col-md-3">
@@ -57,23 +86,24 @@
 	                <label class="form-check-label" for="appariement_4">Jaccard</label>
 	              </div>
 	            </div>
-	            <button id="cherche" class="btn btn-primary w-100 btn-block btn-lg">cherche !</button>
+	            <button id="cherche" class="btn btn-primary w-100 btn-block btn-lg text-white shadow">cherche !</button>
 	          </form>
 	      </div>
 	    </div>
 	  </div>
 	</div>
 
+	{% if docs %}
 	<!-- show documents here -->
 	  <div class="py-5">
 	    <div class="container">
 	      <div class="row">
-	        <div class="col-md-12">
+	        <div class="col-md-12 bg-light shadow w-100">
 	          <div class="table-responsive">
 	            <table class="table table-striped table-borderless">
 	              <thead>
 	                <tr>
-	                  <th scope="col">#</th>
+	                  <th scope="col"># doc</th>
 	                  <th scope="col">First</th>
 	                  <th scope="col">Last</th>
 	                </tr>
@@ -84,7 +114,7 @@
 	                  <td>Mark</td>
 	                  <td>Otto</td>
 	                </tr>
-	                <tr>
+	                <tr>element
 	                  <th scope="row">2</th>
 	                  <td>Jacob</td>
 	                  <td>Thornton</td>
@@ -101,11 +131,13 @@
 	      </div>
 	    </div>
 	  </div>
-
+	{% endif %}
 {% endblock %}
 
  {% block new_script %}
-	<script src="{% static 'assets/js/snackbar.min.js' %}"></script>
+	{% comment %}
+		<script src="{% static 'assets/js/snackbar.min.js' %}"></script>
+	{% endcomment %}
 
 	<script>
 			$(document).ready(function(){
@@ -117,20 +149,10 @@
               if ($(element).prop("checked",true )) $('#ap').removeClass('invisible');
               else $('#ap').addClass('invisible');
           });
-          $('#method_1').click(function (element) {
+          $('#method_1').click(function () {
               $('#ap').addClass('invisible');
           });
 			});
-
-	     $('#cherche').click(function() {
-           Snackbar.show({
-		           text: 'you have submited with success',
-		           width: '475px',
-		           pos: 'bottom-left',
-		           duration: 100000
-           });
-        });
-
 
 	</script>
  {% endblock %}

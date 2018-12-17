@@ -62,9 +62,11 @@ def searchTags(request):
     form = searchForm(request.POST)
     # check whether it's valid:
     if form.is_valid():
-      # process the data in form.cleaned_data as required
-      # ...
-      # redirect to a new URL:
+      query = form.cleaned_data['requete']
+      mthod = form.cleaned_data['method']
+      if not mthod.startswith("boo"):
+        aprmnt = form.cleaned_data['appariement']
+
       print("valide\n", form.cleaned_data )
       return render(request,"recherche/search.html")
     else :
