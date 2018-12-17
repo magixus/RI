@@ -37,11 +37,3 @@ def getDocScores(reverseFile,query, computeFunction=scoreInnerProduct):
         score = computeFunction(weightd,fquery,words)
         docList[d] = (score)
     return docList
-
-"""
-query = "domaine qui permet de faire la recherche"
-print(getDocScores(ifcm.reverseFile,query,computeFunction=scoreInnerProduct))
-print(getDocScores(ifcm.reverseFile,query,computeFunction=scoreCoefDice))
-print(getDocScores(ifcm.reverseFile,query,computeFunction=scoreCosin))
-print(getDocScores(ifcm.reverseFile,query,computeFunction=scoreJaccard))
-"""

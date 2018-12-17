@@ -1,7 +1,4 @@
 from recherche.RI_Methodes import reverseFileConstructionMethods as ifcm
-from recherche.RI_Methodes import ProbaModel
-from recherche.RI_Methodes import VectorialModel
-from recherche.RI_Methodes.BooleanModel import getDocScores
 
 
 def getFreq(reverseFile,w,d): # get frequence  of word  w in doc d

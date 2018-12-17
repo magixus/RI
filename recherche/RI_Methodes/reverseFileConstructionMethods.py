@@ -37,7 +37,7 @@ stopitem = set(load(join(mypath,"stopwords_fr.txt")).lower().split('\n')) | list
 
 
 def generateReversedFile():
-    freq = {}  # empty dict
+    freq = {}  # emphety dict
     for f in docs:
       ## get the text of the file and set it to lowercase
       text = load(join(mypath,f)).lower()

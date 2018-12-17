@@ -62,52 +62,57 @@ def show_doc(request, doc):
   str_doc = load(doc_path)
   return HttpResponse(str_doc)
 
-
+m = ""
+q = ""
 def searchTags(request):
+  global m
+  global q
   res = set()
   # if this is a POST request we need to process the form data
   if request.method == 'POST':
     # create a form instance and populate it with data from the request:
     form = searchForm(request.POST)
-    form_evaluate = searchForm(request.POST)
+    form_evaluate = evaluteForm(request.POST)
     # check whether it's valid:
     if form.is_valid():
-      query = form.cleaned_data['requete']
+      q = query = form.cleaned_data['requete']
       mthod = form.cleaned_data['method']
-      aprmnt = ""
       if not mthod.startswith("boo"):
-        aprmnt = form.cleaned_data['appariement']
+        m = form.cleaned_data['appariement']
 
       if mthod.startswith('bool') :
         docs = BM.getDocScores(reversefile,query)
         return render(request, "recherche/search.html", {'b_documents':docs})
 
       else :
-        if aprmnt.startswith("prod"):
+        if m.startswith("prod"):
           res = VM.getDocScores(reversefile,query,VM.scoreInnerProduct)
-        elif aprmnt.startswith("coef"):
+        elif m.startswith("coef"):
           res = VM.getDocScores(reversefile,query,VM.scoreCoefDice)
-        elif aprmnt.startswith("cosinus"):
+        elif m.startswith("cosinus"):
           res = VM.getDocScores(reversefile,query,VM.scoreCosin)
-        elif aprmnt.startswith("jacc"):
+        elif m.startswith("jacc"):
           res = VM.getDocScores(reversefile,query,VM.scoreJaccard)
 
         if mthod.startswith("vect") : # request vect model
-          print("vec")
           return render(request, "recherche/search.html", {'v_documents':res})
         else: # reqest proba model
-          print(res)
           return render(request, "recherche/search.html", {'p_documents':res})
 
-
-
-
-
-      print("valide\n", form.cleaned_data )
-      return render(request,"recherche/search.html")
     else :
-      print("pas valide")
-      return render(request, "recherche/search.html")
+      docsss = request.POST.getlist('pertinent[]')
+      print(m)
+      print(docsss)
+      if m.startswith("prod"):
+        res = PM.getDocScores(reversefile, q, docsss)
+      elif m.startswith("coef"):
+        res = PM.getDocScores(reversefile, q, docsss)
+      elif m.startswith("cosinus"):
+        res = PM.getDocScores(reversefile, q, docsss)
+      elif m.startswith("jacc"):
+        res = PM.getDocScores(reversefile, q, docsss)
+      print(res)
+      return render(request, "recherche/search.html",{'eval_prob':res})
 
   # if a GET (or any other method) we'll create a blank form
   else:
